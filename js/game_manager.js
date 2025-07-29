@@ -9,6 +9,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("sort", this.sort.bind(this));
 
   this.setup();
 }
@@ -269,4 +270,42 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
+};
+
+// Sort tiles so the largest value ends up in the bottom-right corner
+// and values decrease from right to left and bottom to top
+GameManager.prototype.sort = function () {
+  var self = this;
+
+  if (this.isGameTerminated()) return;
+
+  this.prepareTiles();
+
+  var tiles = [];
+
+  this.grid.eachCell(function (x, y, tile) {
+    if (tile) {
+      tiles.push(tile);
+      self.grid.removeTile(tile);
+    }
+  });
+
+  // Sort by value descending so highest values are placed first
+  tiles.sort(function (a, b) {
+    return b.value - a.value;
+  });
+
+  var index = 0;
+  for (var y = self.size - 1; y >= 0; y--) {
+    for (var x = self.size - 1; x >= 0; x--) {
+      if (index < tiles.length) {
+        var tile = tiles[index];
+        tile.updatePosition({ x: x, y: y });
+        self.grid.insertTile(tile);
+        index++;
+      }
+    }
+  }
+
+  this.actuate();
 };

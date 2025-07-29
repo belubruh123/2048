@@ -529,6 +529,20 @@ hr {
   display: block;
   text-align: center;
   float: right; }
+.sort-button {
+  display: inline-block;
+  background: #5c90e5;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  display: block;
+  text-align: center;
+  float: right;
+  margin-right: 10px;
+}
 
 .game-explanation {
   margin-top: 50px; }
@@ -569,6 +583,13 @@ hr {
     display: block;
     box-sizing: border-box;
     margin-top: 2px; }
+  .sort-button {
+    width: 42%;
+    padding: 0;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 2px;
+  }
 
   .game-container {
     margin-top: 17px;
